@@ -1,0 +1,56 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  flex-shrink: 0;
+}
+
+#game-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #FFB500;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 3rem;
+}
+
+#instructions {
+  color: #aaaaaa;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  margin: 14px 0;
+}
+
+footer * {
+  color: #aaaaaa;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  margin: 10px 0;
+  font-size: 12px;
+}
