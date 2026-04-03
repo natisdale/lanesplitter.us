@@ -4,23 +4,58 @@ File: car.js
 Description: car object for lane splitter game
 **/
 class Car {
-  static leftLane() {return 1;}
-  static middleLane() {return 2;}
-  static rightLane() {return 3;}
+  static leftLane() {
+    return 1;
+  }
+  static middleLane() {
+    return 2;
+  }
+  static rightLane() {
+    return 3;
+  }
   constructor() {
     this.lane = floor(random(1, 4));
     if (this.lane === Car.leftLane()) {
-      this.x = width * 0.25;
+      this._x = width * 0.25;
     } else if (this.lane === Car.middleLane()) {
-      this.x = width * 0.5;
+      this._x = width * 0.5;
     } else {
-      this.x = width * 0.75;
+      this._x = width * 0.75;
     }
-    this.x += (floor(random(-width/50,width/50)));
-    this.y = horizon - width/20;
-    this.color = randomColor();
-    this.size = (width / 3) * 0.7;
+    this._x += floor(random(-width / 50, width / 50));
+    this._y = horizon - width / 20;
+    this._color = randomColor();
+    this._size = (width / 3) * 0.7;
   }
+
+  get x() {
+    return this._x;
+  }
+  set x(value) {
+    this._x = value;
+  }
+
+  get y() {
+    return this._y;
+  }
+  set y(value) {
+    this._y = value;
+  }
+
+  get color() {
+    return this._color;
+  }
+  set color(value) {
+    this._color = value;
+  }
+
+  get size() {
+    return this._size;
+  }
+  set size(value) {
+    this._size = value;
+  }
+
   show() {
     try {
       stroke("black");
@@ -74,7 +109,10 @@ class Car {
         scale(0.9);
         fill("silver");
         beginShape();
-        vertex(-this.size / 2 + this.size / 20, -this.size / 5 - this.size / 20);
+        vertex(
+          -this.size / 2 + this.size / 20,
+          -this.size / 5 - this.size / 20
+        );
         vertex(
           -this.size / 2 + (this.size / 10 + this.size / 20),
           -this.size / 2 + this.size / 20
@@ -144,7 +182,7 @@ class Car {
       if (this.lane === Car.leftLane()) {
         this.x = lerp(width * 0.25, width * 0.1, progress);
       } else if (this.lane === Car.rightLane()) {
-        this.x = lerp(width * 0.75, width * 0.90, progress);
+        this.x = lerp(width * 0.75, width * 0.9, progress);
       }
       // Middle lane travels straight down (no x change)
     } catch (error) {
@@ -160,7 +198,7 @@ class Car {
         let distance = dist(rider.position, riderY, this.x, this.y);
 
         // Collision if distance is less than half the car's size
-        return distance < this.size * .6;
+        return distance < this.size * 0.6;
       }
       return false;
     } catch (error) {

@@ -9,7 +9,7 @@ class Rider {
     this._position = position;
     this._score = 0;
     this._crashed = false;
-    this.lean = 0; // -1 = left, 0 = none, 1 = right
+    this._lean = 0; // -1 = left, 0 = none, 1 = right
   }
 
   get riding() {
@@ -33,6 +33,13 @@ class Rider {
     this._position = value;
   }
 
+  get lean() {
+    return this._lean;
+  }
+  set lean(value) {
+    this._lean = value;
+  }
+  
   get crashed() {
     return this._crashed;
   }
