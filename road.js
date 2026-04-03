@@ -8,6 +8,7 @@ class Road {
     // Road initialization if needed
   }
 
+  // Draw the road lines with perspective
   drawRoadLines() {
     stroke("#FFB500");
 
@@ -32,45 +33,54 @@ class Road {
     pop();
   }
 
+  // Draw dashed lane lines with perspective scaling
   drawDashedLaneLine(startX, endX, startY, endY, roadHeight) {
-    // Calculate total distance along the slope
-    let deltaX = endX - startX;
-    let deltaY = endY - startY;
-    let slopeLength = sqrt(deltaX * deltaX + deltaY * deltaY);
+    try {
+      // Calculate total distance along the slope
+      let deltaX = endX - startX;
+      let deltaY = endY - startY;
+      let slopeLength = sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // Draw exactly 5 lines
-    for (let i = 0; i < 5; i++) {
-      push();
-      // Calculate progress position for this line (evenly distribute 5 lines)
-      let lineProgress = (i + 0.5) / 5; // Center each line in its segment
-      let segmentIndex = i;
+      // Draw exactly 5 lines
+      for (let i = 0; i < 5; i++) {
+        push();
+        try {
+          // Calculate progress position for this line (evenly distribute 5 lines)
+          let lineProgress = (i + 0.5) / 5; // Center each line in its segment
+          let segmentIndex = i;
 
-      // Scale line length based on depth (increased by 100%)
-      let lineLength = (20 + segmentIndex * 10) * 2;
+          // Scale line length based on depth (increased by 100%)
+          let lineLength = (20 + segmentIndex * 10) * 2;
 
-      // Set stroke weight based on depth
-      strokeWeight(2 + segmentIndex * 0.5);
+          // Set stroke weight based on depth
+          strokeWeight(2 + segmentIndex * 0.5);
 
-      // Calculate start and end positions for this dash
-      let dashDistance = lineProgress * slopeLength;
-      let halfLineLength = lineLength / 2;
+          // Calculate start and end positions for this dash
+          let dashDistance = lineProgress * slopeLength;
+          let halfLineLength = lineLength / 2;
 
-      let startDistance = dashDistance - halfLineLength;
-      let endDistance = dashDistance + halfLineLength;
+          let startDistance = dashDistance - halfLineLength;
+          let endDistance = dashDistance + halfLineLength;
 
-      // Ensure we stay within bounds
-      startDistance = max(0, startDistance);
-      endDistance = min(slopeLength, endDistance);
+          // Ensure we stay within bounds
+          startDistance = max(0, startDistance);
+          endDistance = min(slopeLength, endDistance);
 
-      let startProgress = startDistance / slopeLength;
-      let endProgress = endDistance / slopeLength;
+          let startProgress = startDistance / slopeLength;
+          let endProgress = endDistance / slopeLength;
 
-      let dashStartX = startX + deltaX * startProgress;
-      let dashStartY = startY + deltaY * startProgress;
-      let dashEndX = startX + deltaX * endProgress;
-      let dashEndY = startY + deltaY * endProgress;
+          let dashStartX = startX + deltaX * startProgress;
+          let dashStartY = startY + deltaY * startProgress;
+          let dashEndX = startX + deltaX * endProgress;
+          let dashEndY = startY + deltaY * endProgress;
 
-      line(dashStartX, dashStartY, dashEndX, dashEndY);
+          line(dashStartX, dashStartY, dashEndX, dashEndY);
+        } finally {
+          pop();
+        }
+      }
+    } catch (error) {
+      console.error("Error in Road.drawDashedLaneLine():", error);
     }
   }
 }
