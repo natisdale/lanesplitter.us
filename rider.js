@@ -6,23 +6,42 @@ Description: rider object for lane splitter game
 class Rider {
   constructor(riding = false, position = width / 2) {
     this._riding = true;
-    this.position = position;
+    this._position = position;
     this._score = 0;
     this._crashed = false;
+    this.lean = 0; // -1 = left, 0 = none, 1 = right
   }
 
-  get riding() { return this._riding; }
-  set riding(value) { this._riding = value; }
+  get riding() {
+    return this._riding;
+  }
+  set riding(value) {
+    this._riding = value;
+  }
 
-  get score() { return this._score; }
-  set score(value) { this._score = value; }
+  get score() {
+    return this._score;
+  }
+  set score(value) {
+    this._score = value;
+  }
 
-  get crashed() { return this._crashed; }
-  set crashed(value) { 
+  get position() {
+    return this._position;
+  }
+  set position(value) {
+    this._position = value;
+  }
+
+  get crashed() {
+    return this._crashed;
+  }
+  set crashed(value) {
     if (!value) {
-        instructions.textContent = instructionText.movement;
+      instructions.textContent = instructionText.movement;
     }
-    this._crashed = value; }
+    this._crashed = value;
+  }
   show() {
     try {
       let scaleAmount = width / 400; // Scale factor based on width
@@ -46,10 +65,27 @@ class Rider {
           pop();
         }
       } else {
+        if (keyIsDown(LEFT_ARROW)) {
+          this.lean = -1;
+        } else if (keyIsDown(RIGHT_ARROW)) {
+          this.lean = 1;
+        } else {
+          this.lean = 0;
+        }
+        if (mouseIsPressed) {
+          if (mouseX < rider.position) {
+            this.lean = -1;
+          } else if (mouseX > rider.position) {
+            this.lean = 1;
+          } else {
+            this.lean = 0;
+          }
+        }
         push();
         try {
           scale(scaleAmount);
           translate(this.position / scaleAmount, height / scaleAmount - 16);
+          rotate((this.lean * PI) / 40);
           // handlebars
           stroke("black");
           strokeWeight(2);

@@ -23,9 +23,10 @@ function setup() {
   let footer = document.querySelector('footer');
   let headerHeight = header ? header.offsetHeight : 80;
   let footerHeight = footer ? footer.offsetHeight : 40;
-  let canvasHeight = windowHeight - headerHeight - footerHeight;
-
-  let cnv = createCanvas(windowWidth, canvasHeight);
+  // iPhone SE 3rd Gen is 750x1344
+  let canvasHeight = min(1344, windowHeight - headerHeight - footerHeight*2);
+  let canvasWidth = min(750, windowWidth*0.9)
+  let cnv = createCanvas(canvasWidth, canvasHeight);
   cnv.parent("game-container");
   rider = new Rider();
   road = new Road();
@@ -142,6 +143,15 @@ function touchStarted() {
   if (touches.length > 0) {
     checkCrashReset(touches[0].x, touches[0].y);
   }
+  if (touches[0].x < rider.position) {
+    rider.lean = -1;
+  } else if (touches[0].x > rider.position) {
+    rider.lean = -2;
+  }
+}
+
+function touchEnded() {
+  rider.lean = 0;
 }
 
 function checkCrashReset(x, y) {
